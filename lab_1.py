@@ -126,7 +126,7 @@ def transform_hours(hour):
     if hour % 10 == 1 and (hour <= 5 or hour >= 20):
         declension = " час "
     
-    elif hour <= hour % 10 <= 4 and (hour <= 5 or hour >= 20):
+    elif 2 <= hour % 10 <= 4 and (hour <= 5 or hour >= 20):
         declension = " часа "
     
     else:
