@@ -76,47 +76,50 @@ time of day = представление времени суток(time)
 
 алг преобразование(data)
 numbers = список всех цифр
-time = пустая строка
-separator = неверно
 count = 0
-last = пустая строка
+ошика = неверна
 проходим по всей исходной строке data
-    если данный символ в data не входит в numbers и separator = неверно, то
-        separator = верно
-        count = count + 1
-        time = time + пробел
-        last = данный символ в data
-    иначе
-        если данный символ в data входит в numbers и separator = верно, то
-            separator = неверно
-            time = time + данный символ в data
-        иначе если данный символ в data входит в numbers, то
-            time = time + данный символ в data
-        иначе,
-            если last НЕ= данный символ в data, то
-                count = count + 1
-probel = наход(пробел) в time
-hour = цел(от начала до пробела) в time
-minute = цел(от след после пробела до конца) в time
-если длина строк(hours) больше 2 или длина строк(minutes) больше 2 или count НЕ= 1, то
+    если данный символ в data не входит в numbers, то
+        если данный символ в data является пробелом, то
+            count = count + 1
+        иначе
+            count = count + число, да побольше, уж точно больше 1
+
+если count не равен 1 или первый символ в data не входит в numbers, то
+    ошибка верна
+если ошибка верна, то
     вернуть ошибка
 иначе,
-    вернуть time
+    вернуть data
 
 алг main()
 data = запрос данных
 time = преобразование(data)
 если time = ошибка, то
-    вывести Ошибка, попробуйте ввести время в формате: часы минуты
-    завершить функцию
+    вывести Ошибка, попробуйте ввести время в формате: часы(пробел)минуты
+    предложить ещё раз
+    при отказе
+        завершить функцию
+если проверка минут(time) = неверно и проверка часов(time) = неверно, то
+    вывести Введены недопустимые данные: часы должны быть от 0 до 23, минуты должны быть от 0 до 59.
+    предложить ещё раз
+    при отказе
+        завершить функцию
 если проверка часов(time) = неверно, то
     вывести Введены недопустимые данные: часы должны быть от 0 до 23.
-    завершить функцию
+    предложить ещё раз
+    при отказе
+        завершить функцию
 если проверка минут(time) = неверно, то
-    вывести Введены недопустимые данные: часы должны быть от 0 до 59.
-    завершить функцию
+    вывести Введены недопустимые данные: минуты должны быть от 0 до 59.
+    предложить ещё раз
+    при отказе
+        завершить функцию
 иначе,
     вывести часы(time)
+    предложить ещё раз
+    при отказе
+        завершить функцию
 '''
 
 
@@ -216,38 +219,28 @@ def check_hours(time):
 
 def convert(data):
     numbers = "0123456789"
-    time = ""
-    separator = False
+    mistake = False
     count = 0
-    last = ""
-    
+    strike = 0
     for i in range(len(data)):
-        if data[i] not in numbers and not(separator):
-            time += " "
-            separator = True
-            count += 1
-            last = data[i]
-        
-        else:
-            if separator and data[i] in numbers:
-                separator = False
-                time += data[i]
-            
-            elif data[i] in numbers:
-                time += data[i]
-            
+        if data[i] not in numbers:
+            if data[i] == " ":
+                strike = 0
+                count += 1
             else:
-                if data[i] != last:
-                    count += 1
-    
-    probel = time.find(" ")
-    hours = time[:probel]
-    minutes = time[probel + 1:]
-    
-    if len(hours) > 2 or len(minutes) > 2 or count != 1:
+                count += 15
+        else:
+            strike += 1
+        if strike > 2:
+            mistake = True
+    if count != 1 or data[0] not in numbers:
+        mistake = True
+    if mistake:
         return "ошибка"
     else:
-        return time
+        return data
+        
+    
 
 
 def main():
@@ -255,19 +248,43 @@ def main():
     time = convert(data)
     
     if time == "ошибка":
-        print("Ошибка, попробуйте ввести время в формате: часы минуты")
-        return
+        print("Ошибка, попробуйте ввести время в формате: часы [пробел] минуты")
+        otvet = input("Запустить программу ещё раз? (yes/another) ")
+        if otvet.lower() == "yes":
+            main()
+        else:
+            return        
     
-    elif not(check_hours(time)):
-        print("Введены недопустимые данные: часы должны быть от 0 до 23.")
-        return
+    elif not(check_hours(time)) and not(check_minutes(time)):
+        print("Введены недопустимые данные: часы должны быть от 0 до 23, минуты должны быть от 0 до 59.")
+        otvet = input("Запустить программу ещё раз? (yes/another) ")
+        if otvet.lower() == "yes":
+            main()
+        else:
+            return        
     
     elif not(check_minutes(time)):
         print("Введены недопустимые данные: минуты должны быть от 0 до 59.")
-        return
+        otvet = input("Запустить программу ещё раз? (yes/another) ")
+        if otvet.lower() == "yes":
+            main()
+        else:
+            return 
+    elif not(check_hours(time)):
+        print("Введены недопустимые данные: часы должны быть от 0 до 23.")
+        otvet = input("Запустить программу ещё раз? (yes/another) ")
+        if otvet.lower() == "yes":
+            main()
+        else:
+            return        
     
     else:
         print(clock(time))
+        otvet = input("Запустить программу ещё раз? (yes/another) ")
+        if otvet.lower() == "yes":
+            main()
+        else:
+            return        
 
 
 if __name__ == "__main__":
