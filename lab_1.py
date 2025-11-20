@@ -1,6 +1,10 @@
 """
 Алгоритм программы:
-
+пока пользователь хочет использовать программу не закнчиваем
+запрашиваем его данные
+проверяем их на ошимбки
+в случае ошибки информируем
+предлагаем повторить
 """
 
 
@@ -10,7 +14,7 @@ def transform_hours(hour):
     if hour % 10 == 1 and (hour < 6 or hour > 19):
         declension = " час "
     
-    elif 2 <= hour % 10 <= 4 and (hour < 6 or hour > 19):
+    elif 1 < hour % 10 < 5 and (hour < 6 or hour > 19):
         declension = " часа "
     
     else:
@@ -21,10 +25,10 @@ def transform_hours(hour):
 def transform_minutes(minute):
     minute = int(minute)
     
-    if minute % 10 == 1 and (minute <= 5 or minute >= 20):
+    if minute % 10 == 1 and (minute < 6 or minute > 19):
         declension = " минута "
     
-    elif 2 <= minute % 10 <= 4 and (minute <= 5 or minute >= 20):
+    elif 1 < minute % 10 < 5 and (minute < 6 or minute > 19):
         declension = " минуты "
     
     else:
@@ -42,13 +46,13 @@ def time_of_the_day(time):
     
     elif hours == 12 and minutes == 0:
         time_of_the_day = "полдень"
-    elif 0 <= hours <= 5:
+    elif -1 < hours < 6:
         time_of_the_day = "ночи"
     
-    elif 6 <= hours <= 11:
+    elif 5 < hours < 12:
         time_of_the_day = "утра"
     
-    elif 12 <= hours <= 17:
+    elif 11 < hours < 18:
         time_of_the_day = "дня"
     
     else:
@@ -83,7 +87,7 @@ def clock(time):
 def check_minutes(time):
     probel = time.find(" ")
     
-    if 0 <= int(time[probel + 1:]) <= 59:
+    if -1 < int(time[probel + 1:]) < 60:
         return True
     else:
         return False
@@ -92,7 +96,7 @@ def check_minutes(time):
 def check_hours(time):
     probel = time.find(" ")
     
-    if 0 <= int(time[:probel]) <= 23:
+    if -1 < int(time[:probel]) < 24:
         return True
     else:
         return False
@@ -121,51 +125,43 @@ def convert(data):
     else:
         return data
         
-    
+
+def razgovor():
+    flag = True
+    while flag:
+        otvet = input("Запустить программу ещё раз? (y/n): ")
+        if otvet.lower() == "y":
+            return True
+        elif otvet.lower() == "n":
+            return False
+        else:
+            print("Указано же! y/n. Другие значения не принимаются!")
 
 
 def main():
-    data = input("Введите время: ")
-    time = convert(data)
+    usl = True
+    while usl:
+        data = input("Введите время: ")
+        time = convert(data)
     
-    if time == "ошибка":
-        print("Ошибка, попробуйте ввести время в формате: часы [пробел] минуты")
-        otvet = input("Запустить программу ещё раз? (yes/another) ")
-        if otvet.lower() == "yes":
-            main()
-        else:
-            return        
+        if time == "ошибка":
+            print("Ошибка, попробуйте ввести время в формате: часы [пробел] минуты")
     
-    elif not(check_hours(time)) and not(check_minutes(time)):
-        print("Введены недопустимые данные: часы должны быть от 0 до 23, минуты должны быть от 0 до 59.")
-        otvet = input("Запустить программу ещё раз? (yes/another) ")
-        if otvet.lower() == "yes":
-            main()
-        else:
-            return        
+        elif not(check_hours(time)) and not(check_minutes(time)):
+            print("Введены недопустимые данные: часы должны быть от 0 до 23, минуты должны быть от 0 до 59.")
     
-    elif not(check_minutes(time)):
-        print("Введены недопустимые данные: минуты должны быть от 0 до 59.")
-        otvet = input("Запустить программу ещё раз? (yes/another) ")
-        if otvet.lower() == "yes":
-            main()
-        else:
-            return 
-    elif not(check_hours(time)):
-        print("Введены недопустимые данные: часы должны быть от 0 до 23.")
-        otvet = input("Запустить программу ещё раз? (yes/another) ")
-        if otvet.lower() == "yes":
-            main()
-        else:
-            return        
+        elif not(check_minutes(time)):
+            print("Введены недопустимые данные: минуты должны быть от 0 до 59.")
+
+        elif not(check_hours(time)):
+            print("Введены недопустимые данные: часы должны быть от 0 до 23.")
     
-    else:
-        print(clock(time))
-        otvet = input("Запустить программу ещё раз? (yes/another) ")
-        if otvet.lower() == "yes":
-            main()
         else:
-            return        
+            print(clock(time))
+
+        usl = razgovor()
+            
+    return
 
 
 if __name__ == "__main__":
