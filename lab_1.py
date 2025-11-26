@@ -39,10 +39,10 @@
 def transform_hours(hour):
     hour = int(hour)
     
-    if hour % 10 == 1 and (hour < 6 or hour > 19):
+    if hour % 10 == 1 and (hour < 6 or hour >= 21):
         declension = " час "
     
-    elif 1 < hour % 10 < 5 and (hour < 6 or hour > 19):
+    elif 2 <= hour % 10 < 5 and (hour < 6 or hour >= 21):
         declension = " часа "
     
     else:
@@ -53,10 +53,10 @@ def transform_hours(hour):
 def transform_minutes(minute):
     minute = int(minute)
     
-    if minute % 10 == 1 and (minute < 6 or minute > 19):
+    if minute % 10 == 1 and (minute < 6 or minute >= 21):
         declension = " минута "
     
-    elif 1 < minute % 10 < 5 and (minute < 6 or minute > 19):
+    elif 2 <= minute % 10 < 5 and (minute < 6 or minute >= 21):
         declension = " минуты "
     
     else:
@@ -74,13 +74,13 @@ def time_of_the_day(time):
     
     elif hours == 12 and minutes == 0:
         time_of_the_day = "полдень"
-    elif -1 < hours < 6:
+    elif 0 <= hours < 6:
         time_of_the_day = "ночи"
     
-    elif 5 < hours < 12:
+    elif 6 <= hours < 12:
         time_of_the_day = "утра"
     
-    elif 11 < hours < 18:
+    elif 12 <= hours < 18:
         time_of_the_day = "дня"
     
     else:
@@ -115,7 +115,7 @@ def clock(time):
 def check_minutes(time):
     probel = time.find(" ")
     
-    if -1 < int(time[probel + 1:]) < 60:
+    if 0 <= int(time[probel + 1:]) < 60:
         return True
     else:
         return False
@@ -124,7 +124,7 @@ def check_minutes(time):
 def check_hours(time):
     probel = time.find(" ")
     
-    if -1 < int(time[:probel]) < 24:
+    if 0 <= int(time[:probel]) < 24:
         return True
     else:
         return False
