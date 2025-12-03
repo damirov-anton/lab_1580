@@ -178,7 +178,8 @@ def main():
             print("Введены недопустимые данные: часы должны быть от 0 до 23.")
     
         else:
-            print(clock(time))
+            result = clock(time)
+            print(result)
 
         usl = razgovor()
             
