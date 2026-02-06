@@ -74,7 +74,7 @@ def selection_sort(spis):
     for i in range(length):
         min_ind = i
         for j in range(1 + i, length):
-            if spis[j] < spis[i]:
+            if spis[j] < spis[min_ind]:
                 min_ind = j
             comp += 1
         if min_ind != i:
@@ -423,4 +423,5 @@ def main():
             end = True 
 
 if __name__ == "__main__":
+
     main()
